@@ -2,9 +2,11 @@ package controllers
 
 import (
 	"net/http"
+	"reflect"
 	"strconv"
 
 	"crud-echo-gorm/lib/database"
+	"crud-echo-gorm/middlewares"
 	"crud-echo-gorm/models"
 
 	"github.com/labstack/echo/v4"
@@ -94,5 +96,32 @@ func DeleteUserController(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"messages": "success delete user",
 		"id":       result,
+	})
+}
+
+func LoginUserController(c echo.Context) error {
+	user := models.User{}
+	c.Bind(&user)
+
+	result, err := database.LoginUser(user)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	reflectValue := reflect.ValueOf(result)
+	userID := reflectValue.FieldByName("ID").Interface().(uint)
+	userName := reflectValue.FieldByName("Name").Interface().(string)
+	userEmail := reflectValue.FieldByName("Email").Interface().(string)
+
+	token, err := middlewares.CreateToken(int(userID), userName)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	userResponse := models.UserResponse{ID: userID, Name: userName, Email: userEmail, Token: token}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success login user",
+		"user":    userResponse,
 	})
 }

@@ -59,3 +59,10 @@ func DeleteUser(userID int) (interface{}, error) {
 	}
 	return userID, nil
 }
+
+func LoginUser(u models.User) (interface{}, error) {
+	if err := config.DB.Where("email = ? AND password = ?", u.Email, u.Password).First(&u).Error; err != nil {
+		return nil, err
+	}
+	return u, nil
+}
