@@ -46,7 +46,7 @@ func New() *echo.Echo {
 	eBookJWT.DELETE("/:id", controllers.DeleteBookController)
 
 	// blogs routes
-	e.GET("/blogs",controllers.GetBlogsController)
+	// e.GET("/blogs",controllers.GetBlogsController)
 
 	return e
 }

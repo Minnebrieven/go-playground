@@ -1,0 +1,7 @@
+mode: set
+calculate/calculate.go:7.40,9.2 1 1
+calculate/calculate.go:11.43,13.2 1 1
+calculate/calculate.go:15.49,16.18 1 1
+calculate/calculate.go:16.18,18.3 1 1
+calculate/calculate.go:19.2,19.30 1 1
+calculate/calculate.go:22.46,24.2 1 1
